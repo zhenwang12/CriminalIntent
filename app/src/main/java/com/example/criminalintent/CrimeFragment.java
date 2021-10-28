@@ -1,5 +1,7 @@
 package com.example.criminalintent;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -30,13 +32,17 @@ public class CrimeFragment extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         UUID crimeId = (UUID) getArguments().getSerializable(EXTRA_CRIME_ID);
+        int index = getArguments().getInt("CRIME_INDEX", -1);
+        Intent intent = new Intent();
+        intent.putExtra("CRIME_INDEX", index);
+        getActivity().setResult(Activity.RESULT_OK, intent);
         mCrime = CrimeLab.get(getActivity()).getCrime(crimeId);
     }
 
-    public static CrimeFragment newInstance(UUID crimeId) {
+    public static CrimeFragment newInstance(UUID crimeId, int index) {
         Bundle args = new Bundle();
         args.putSerializable(EXTRA_CRIME_ID, crimeId);
-
+        args.putInt("CRIME_INDEX", index);
         CrimeFragment fragment = new CrimeFragment();
         fragment.setArguments(args);
         return fragment;

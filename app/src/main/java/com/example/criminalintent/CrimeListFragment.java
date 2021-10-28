@@ -1,5 +1,6 @@
 package com.example.criminalintent;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -7,7 +8,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -22,6 +22,7 @@ import java.util.Locale;
 public class CrimeListFragment extends Fragment {
     private RecyclerView mCrimeRecyclerView;
     private CrimeAdapter mAdapter;
+    private static final int REQUEST_CRIME = 1;
 
     @Nullable
     @Override
@@ -35,12 +36,29 @@ public class CrimeListFragment extends Fragment {
         return v;
     }
 
+
+
     private void updateUI() {
         CrimeLab crimeLab = CrimeLab.get(getActivity());
         List<Crime> crimes = crimeLab.getCrimes();
 
-        mAdapter = new CrimeAdapter(crimes);
-        mCrimeRecyclerView.setAdapter(mAdapter);
+        if (mAdapter == null) {
+            mAdapter = new CrimeAdapter(crimes);
+            mCrimeRecyclerView.setAdapter(mAdapter);
+        }
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == 1) {
+            if (resultCode == Activity.RESULT_OK) {
+                int index = data.getIntExtra("CRIME_INDEX", -1);
+                if (index >= 0) {
+                    mAdapter.notifyItemChanged(index);
+                }
+            }
+        }
     }
 
     private class CrimeHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
@@ -69,7 +87,8 @@ public class CrimeListFragment extends Fragment {
         @Override
         public void onClick(View v) {
             Intent intent = CrimeActivity.newIntent(getActivity(), mCrime.getId());
-            startActivity(intent);
+            intent.putExtra("CRIME_INDEX", getLayoutPosition());
+            startActivityForResult(intent, REQUEST_CRIME);
         }
     }
 
