@@ -53,10 +53,11 @@ public class CrimeListFragment extends Fragment {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == 1) {
             if (resultCode == Activity.RESULT_OK) {
-                int index = data.getIntExtra("CRIME_INDEX", -1);
-                if (index >= 0) {
-                    mAdapter.notifyItemChanged(index);
-                }
+//                int index = data.getIntExtra("CRIME_INDEX", -1);
+//                if (index >= 0) {
+//                    mAdapter.notifyItemChanged(index);
+//                }
+                mAdapter.notifyDataSetChanged();
             }
         }
     }
