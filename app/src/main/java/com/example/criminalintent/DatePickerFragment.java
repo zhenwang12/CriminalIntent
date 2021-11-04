@@ -8,14 +8,11 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.DatePicker;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
-import androidx.viewpager.widget.ViewPager;
 
 import java.util.Calendar;
 import java.util.Date;
@@ -25,8 +22,6 @@ public class DatePickerFragment extends DialogFragment {
     private static final String ARG_DATE = "date";
     public static final String EXTRA_DATE = "EXTRA_DATE";
     DatePicker mDatePicker;
-//    Button mOkButton;
-//    Button mCancelButton;
 
     public static DatePickerFragment newInstance(Date date) {
         Bundle args = new Bundle();
